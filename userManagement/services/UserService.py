@@ -1,7 +1,7 @@
 from core.models import User, DonationCampaign, Donation
 from helpers import IpfsHelper
-from ipfsGateway.controllers import UserIpfsGatewayController
-from sessionManagement.controllers import SessionController
+from ipfs_gateway.controllers import UserIpfsGatewayController
+from session_management.controllers import SessionController
 
 class UserService:
 

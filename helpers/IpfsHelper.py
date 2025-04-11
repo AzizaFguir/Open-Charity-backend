@@ -36,8 +36,6 @@ class IpfsHelper:
     
     @staticmethod
     def fetchData(cid: str):
-        #print(f"{IpfsHelper.__GATEWAY_URL}{cid}")
-        #print(requests.get(f"{IpfsHelper.__GATEWAY_URL}{cid}"))
         return json.loads(requests.get(f"{IpfsHelper.__GATEWAY_URL}{cid}").text)
 
         

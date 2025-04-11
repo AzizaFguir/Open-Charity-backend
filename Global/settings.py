@@ -50,10 +50,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'core',
     'userManagement',
-    'donationCampaignManagement',
-    'donationManagement',
-    'sessionManagement',
-    'ipfsGateway'
+    'donation_campaign_management',
+    'donation_management',
+    'session_management',
+    'ipfs_gateway'
 ]
 
 MIDDLEWARE = [

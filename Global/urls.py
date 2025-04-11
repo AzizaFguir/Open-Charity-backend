@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import donationCampaignManagement.views 
+import donation_campaign_management.views 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('donationCampaigns/', donationCampaignManagement.views.getAllDonationCampaigns),
-    path('donationCampaigns/<str:id>', donationCampaignManagement.views.getDonationCampaign),
-    path("users/<str:walletAddress>/donationCampaigns/", include("donationCampaignManagement.urls")),
+    path('donationCampaigns/', donation_campaign_management.views.getAllDonationCampaigns),
+    path('donationCampaigns/<str:id>', donation_campaign_management.views.getDonationCampaign),
+    path("users/<str:walletAddress>/donationCampaigns/", include("donation_campaign_management.urls")),
     path("users/", include("userManagement.urls"))
 ]
