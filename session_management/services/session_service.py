@@ -5,10 +5,15 @@ from ipfs_gateway.controllers import UserIpfsGatewayController
 
 class SessionService: 
 
-    @staticmethod
-    def addSession(walletAddress: str, signature: str): 
+    def __init__(
+        self,
+        userIpfsGatewayController = UserIpfsGatewayController()
+    ):
+        self.userIpfsGatewayController = userIpfsGatewayController
+
+    def addSession(self, walletAddress: str, signature: str): 
         try:
-            userIpfsRecord = UserIpfsGatewayController.getUserIpfsData(walletAddress)
+            userIpfsRecord = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
 
             if userIpfsRecord["walletAddress"] == "":
                 return {
@@ -32,8 +37,7 @@ class SessionService:
             }
 
     
-    @staticmethod
-    def removeSession(sessionToken: str):
+    def removeSession(self, sessionToken: str):
         Session.objects.filter(sessionToken=sessionToken).delete()
 
         return {

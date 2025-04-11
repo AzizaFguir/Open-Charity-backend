@@ -1,27 +1,37 @@
 from core.models import DonationCampaign, Donation
 from helpers import IpfsHelper, StringHelper
 from ipfs_gateway.controllers import DonationCampaignIpfsGatewayController
-from userManagement.controllers import UserController
+from user_management.controllers import UserController
+from common import singleton
 
 
+@singleton
 class DonationCampaignService: 
-    
-    def getDonationCampaigns():
-        return DonationCampaignIpfsGatewayController.getDonationCampaignsIpfsRecord()
 
-    def getDonationCampaign(id):
-        return DonationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
+    def __init__(
+        self,
+        donationCampaignIpfsGatewayController = DonationCampaignIpfsGatewayController(),
+        userController = UserController()
+    ):
+        self.donationCampaignIpfsGatewayController = donationCampaignIpfsGatewayController
+        self.userController = userController
+    
+    def getDonationCampaigns(self):
+        return self.donationCampaignIpfsGatewayController.getDonationCampaignsIpfsRecord()
+
+    def getDonationCampaign(self, id):
+        return self.donationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
     
 
-    def createDonationCampaign(data):
+    def createDonationCampaign(self, data):
         donationCampaign = DonationCampaign(StringHelper.generateRandomString(), data["title"], data["description"], data["wallpaper"], data["beneficiary"])
-        DonationCampaignIpfsGatewayController.saveDonationCampaignIpfsRecord(donationCampaign.getId(), IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
-        UserController.addDonationCampaignToUser(data["beneficiary"], donationCampaign)
+        self.donationCampaignIpfsGatewayController.saveDonationCampaignIpfsRecord(donationCampaign.getId(), IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
+        self.userController.addDonationCampaignToUser(data["beneficiary"], donationCampaign)
         return donationCampaign.getData()
 
     
-    def updateDonationCampaign(data, id):
-        donationCampaignData = DonationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
+    def updateDonationCampaign(self, data, id):
+        donationCampaignData = self.donationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
         
         donationCampaign = DonationCampaign(
             donationCampaignData["id"],
@@ -34,14 +44,14 @@ class DonationCampaignService:
         )
 
         donationCampaign.update(data["title"], data["description"], data["openStatus"], data["wallpaper"])
-        DonationCampaignIpfsGatewayController.updateDonationCampaignIpfsRecord(id, IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
-        UserController.updateUserDonationCampaign(donationCampaign.getBeneficiary(), donationCampaign)
+        self.donationCampaignIpfsGatewayController.updateDonationCampaignIpfsRecord(id, IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
+        self.userController.updateUserDonationCampaign(donationCampaign.getBeneficiary(), donationCampaign)
 
         return donationCampaign.getData()
 
-    def deleteDonationCampaign(id):
-        donationCampaignData = DonationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
-        result = DonationCampaignIpfsGatewayController.deleteDonationCampaignIpfsRecord(id)
+    def deleteDonationCampaign(self, id):
+        donationCampaignData = self.donationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
+        result = self.donationCampaignIpfsGatewayController.deleteDonationCampaignIpfsRecord(id)
 
         if(result["code"] == 200):
             donationCampaign = DonationCampaign(
@@ -54,14 +64,14 @@ class DonationCampaignService:
                 donationCampaignData["openStatus"]
             )
 
-            UserController.removeDonationCampaignFromUser(donationCampaign.getBeneficiary(), donationCampaign.getId())
+            self.userController.removeDonationCampaignFromUser(donationCampaign.getBeneficiary(), donationCampaign.getId())
 
         
         return result
     
     @staticmethod
-    def addDonationToCampaign(donation: Donation, id: str):
-        donationCampaignData = DonationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
+    def addDonationToCampaign(self, donation: Donation, id: str):
+        donationCampaignData = self.donationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
 
         donationCampaign = DonationCampaign(
             donationCampaignData["id"],
@@ -74,8 +84,8 @@ class DonationCampaignService:
         )  
 
         donationCampaign.addDonation(donation)
-        DonationCampaignIpfsGatewayController.updateDonationCampaignIpfsRecord(id, IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
-        UserController.updateUserDonationCampaign(donationCampaign.getBeneficiary(), donationCampaign)
+        self.donationCampaignIpfsGatewayController.updateDonationCampaignIpfsRecord(id, IpfsHelper.uploadData(donationCampaign.getData())["IpfsHash"])
+        self.userController.updateUserDonationCampaign(donationCampaign.getBeneficiary(), donationCampaign)
 
         return donationCampaign.getData()
 

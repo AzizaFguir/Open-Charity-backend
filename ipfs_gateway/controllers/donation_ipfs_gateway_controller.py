@@ -1,7 +1,14 @@
 from ..services import DonationIpfsGatewayService
+from common import singleton
 
+@singleton
 class DonationIpfsGatewayController:
 
-    @staticmethod
-    def saveDonationIpfsRecord(id: str, cid: str):
-        return DonationIpfsGatewayService.saveDonationIpfsRecord(id, cid)
+    def __init__(
+        self,
+        donationIpfsGatewayService = DonationIpfsGatewayService()
+    ):
+        self.donationIpfsGatewayService = donationIpfsGatewayService
+
+    def saveDonationIpfsRecord(self, id: str, cid: str):
+        return self.donationIpfsGatewayService.saveDonationIpfsRecord(id, cid)

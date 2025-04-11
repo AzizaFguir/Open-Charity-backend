@@ -1,18 +1,18 @@
 
 from ..models import DonationIpfsGateway
 from helpers import IpfsHelper
+from common import singleton
 
+@singleton
 class DonationIpfsGatewayService:
     
-    @staticmethod
-    def saveDonationIpfsRecord(id: str, cid: str):
+    def saveDonationIpfsRecord(self, id: str, cid: str):
        donationIpfsGateway = DonationIpfsGateway(id=id, cid=cid)
        donationIpfsGateway.save()
        return True
 
 
-    @staticmethod
-    def getDonation(id):
+    def getDonation(self, id):
         try:
             return IpfsHelper.fetchData(DonationIpfsGateway.objects.get(id=id).cid)
         except DonationIpfsGateway.DoesNotExist:

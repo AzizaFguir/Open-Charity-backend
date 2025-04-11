@@ -1,27 +1,25 @@
 from ..models import UserIpfsGateway
 from helpers import IpfsHelper
+from common import singleton
 
+@singleton
 class UserIpfsGatewayService:
     
-    @staticmethod
-    def saveUserIpfsRecord(walletAddress, cid):
+    def saveUserIpfsRecord(self, walletAddress, cid):
         userIpfsGateway = UserIpfsGateway(walletAddress = walletAddress, cid = cid)
         userIpfsGateway.save()
         return True
     
-    @staticmethod
-    def deleteUserIpfsRecord(walletAddress: str):
+    def deleteUserIpfsRecord(self, walletAddress: str):
         return UserIpfsGateway.objects.filter(walletAddress=walletAddress).delete()
 
-    @staticmethod 
-    def updateUserIpfsRecord(walletAddress: str, cid: str):
+    def updateUserIpfsRecord(self, walletAddress: str, cid: str):
         userIpfsRecord = UserIpfsGateway.objects.get(walletAddress=walletAddress)
         userIpfsRecord.cid = cid
         userIpfsRecord.save()
         return True
 
-    @staticmethod
-    def getUserIpfsData(walletAddress):
+    def getUserIpfsData(self, walletAddress):
         try:
             return IpfsHelper.fetchData(UserIpfsGateway.objects.get(walletAddress = walletAddress).cid)
         except UserIpfsGateway.DoesNotExist:
@@ -33,8 +31,7 @@ class UserIpfsGatewayService:
                 "donationCampaigns": {}
             }
     
-    @staticmethod
-    def getAllUserIpfsData():
+    def getAllUserIpfsData(self):
         return [IpfsHelper.fetchData(userIpfsRecord.cid) for userIpfsRecord in UserIpfsGateway.objects.all()]
 
         

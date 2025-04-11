@@ -23,5 +23,5 @@ urlpatterns = [
     path('donationCampaigns/', donation_campaign_management.views.getAllDonationCampaigns),
     path('donationCampaigns/<str:id>', donation_campaign_management.views.getDonationCampaign),
     path("users/<str:walletAddress>/donationCampaigns/", include("donation_campaign_management.urls")),
-    path("users/", include("userManagement.urls"))
+    path("users/", include("user_management.urls"))
 ]

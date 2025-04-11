@@ -1,23 +1,27 @@
 from ..services import DonationCampaignIpfsGatewayService
+from common import singleton
 
+
+@singleton
 class DonationCampaignIpfsGatewayController:
+
+    def __init__(
+        self,
+        donationCampaignIpfsGatewayService = DonationCampaignIpfsGatewayService()
+    ):
+        self.donationCampaignIpfsGatewayService = donationCampaignIpfsGatewayService
     
-    @staticmethod
-    def saveDonationCampaignIpfsRecord(id, cid):
-        return DonationCampaignIpfsGatewayService.saveDonationCampaignIpfsRecord(id, cid)
+    def saveDonationCampaignIpfsRecord(self, id, cid):
+        return self.donationCampaignIpfsGatewayService.saveDonationCampaignIpfsRecord(id, cid)
 
-    @staticmethod
-    def deleteDonationCampaignIpfsRecord(id):
-        return DonationCampaignIpfsGatewayService.deleteDonationCampaignIpfsRecord(id)
+    def deleteDonationCampaignIpfsRecord(self, id):
+        return self.donationCampaignIpfsGatewayService.deleteDonationCampaignIpfsRecord(id)
 
-    @staticmethod
-    def updateDonationCampaignIpfsRecord(id, cid):
-        return DonationCampaignIpfsGatewayService.updateDonationCampaignIpfsRecord(id, cid)
+    def updateDonationCampaignIpfsRecord(self, id, cid):
+        return self.donationCampaignIpfsGatewayService.updateDonationCampaignIpfsRecord(id, cid)
 
-    @staticmethod
-    def getDonationCampaignsIpfsRecord():
-        return DonationCampaignIpfsGatewayService.getDonationCampaignsIpfsRecord()
+    def getDonationCampaignsIpfsRecord(self):
+        return self.donationCampaignIpfsGatewayService.getDonationCampaignsIpfsRecord()
 
-    @staticmethod
-    def getDonationCampaignIpfsRecord(id):
-        return DonationCampaignIpfsGatewayService.getDonationCampaignIpfsRecord(id)
+    def getDonationCampaignIpfsRecord(self, id):
+        return self.donationCampaignIpfsGatewayService.getDonationCampaignIpfsRecord(id)

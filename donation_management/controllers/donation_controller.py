@@ -1,8 +1,13 @@
 from ..services import DonationService
+from common import singleton
 
+
+@singleton
 class DonationController:
+
+    def __init__(self, donationService = DonationService()):
+        self.donationService = donationService
     
-    @staticmethod
-    def addDonation(donationData: dict):
-        return DonationService.addDonation(donationData)
+    def addDonation(self, donationData: dict):
+        return self.donationService.addDonation(donationData)
     

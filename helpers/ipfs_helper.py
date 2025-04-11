@@ -1,6 +1,6 @@
 import json
 import requests
-from .StringHelper import StringHelper
+from helpers.string_helper import StringHelper
 
 
 class IpfsHelper:

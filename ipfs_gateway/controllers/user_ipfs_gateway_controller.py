@@ -1,22 +1,27 @@
 from ..services import UserIpfsGatewayService
+from common import singleton
 
+
+@singleton
 class UserIpfsGatewayController:
-    
-    @staticmethod
-    def saveUserIpfsRecord(walletAddress: str, cid: str):
-        return UserIpfsGatewayService.saveUserIpfsRecord(walletAddress, cid)
-    
-    @staticmethod
-    def deleteUserIpfsRecord(walletAddress: str):
-        return UserIpfsGatewayService.deleteUserIpfsRecord(walletAddress)
-    
-    @staticmethod 
-    def updateUserIpfsRecord(walletAddress: str, cid: str):
-        return UserIpfsGatewayService.updateUserIpfsRecord(walletAddress, cid)
 
-    @staticmethod
-    def getUserIpfsData(walletAddress: str):
-        return UserIpfsGatewayService.getUserIpfsData(walletAddress)
+    def __init__(
+        self,
+        userIpfsGatewayService = UserIpfsGatewayService()
+    ):
+        self.userIpfsGatewayService = userIpfsGatewayService
     
-    def getAllUserIpfsData():
-        return UserIpfsGatewayService.getAllUserIpfsData()
+    def saveUserIpfsRecord(self, walletAddress: str, cid: str):
+        return self.userIpfsGatewayService.saveUserIpfsRecord(walletAddress, cid)
+    
+    def deleteUserIpfsRecord(self, walletAddress: str):
+        return self.userIpfsGatewayService.deleteUserIpfsRecord(walletAddress)
+     
+    def updateUserIpfsRecord(self, walletAddress: str, cid: str):
+        return self.userIpfsGatewayService.updateUserIpfsRecord(walletAddress, cid)
+
+    def getUserIpfsData(self, walletAddress: str):
+        return self.userIpfsGatewayService.getUserIpfsData(walletAddress)
+    
+    def getAllUserIpfsData(self):
+        return self.userIpfsGatewayService.getAllUserIpfsData()

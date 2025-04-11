@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'core',
-    'userManagement',
+    'user_management',
     'donation_campaign_management',
     'donation_management',
     'session_management',

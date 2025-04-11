@@ -1,11 +1,17 @@
 from ..services import SessionService
+from common import singleton
 
+@singleton
 class SessionController:
 
-    @staticmethod
-    def addSession(walletAddress: str, signature: str):
-        return SessionService.addSession(walletAddress, signature)
+    def __init__(
+        self,
+        sessionService = SessionService()
+    ):
+        self.sessionService = sessionService
+
+    def addSession(self, walletAddress: str, signature: str):
+        return self.sessionService.addSession(walletAddress, signature)
     
-    @staticmethod
-    def removeSession(sessionToken: str):
-        return SessionService.removeSession(sessionToken)
+    def removeSession(self, sessionToken: str):
+        return self.sessionService.removeSession(sessionToken)
