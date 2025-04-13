@@ -69,7 +69,6 @@ class DonationCampaignService:
         
         return result
     
-    @staticmethod
     def addDonationToCampaign(self, donation: Donation, id: str):
         donationCampaignData = self.donationCampaignIpfsGatewayController.getDonationCampaignIpfsRecord(id)
 

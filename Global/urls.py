@@ -20,8 +20,8 @@ import donation_campaign_management.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('donationCampaigns/', donation_campaign_management.views.getAllDonationCampaigns),
-    path('donationCampaigns/<str:id>', donation_campaign_management.views.getDonationCampaign),
+    path('donation-campaigns/', donation_campaign_management.views.getAllDonationCampaigns),
+    path('donation-campaigns/<str:id>', donation_campaign_management.views.getDonationCampaign),
     path("users/<str:walletAddress>/donationCampaigns/", include("donation_campaign_management.urls")),
     path("users/", include("user_management.urls"))
 ]
