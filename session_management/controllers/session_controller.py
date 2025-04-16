@@ -1,5 +1,5 @@
 from ..services import SessionService
-from common import singleton
+from decorators import singleton
 
 @singleton
 class SessionController:

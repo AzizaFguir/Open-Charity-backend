@@ -2,7 +2,7 @@ from core.models import User, DonationCampaign, Donation
 from helpers import IpfsHelper
 from ipfs_gateway.controllers import UserIpfsGatewayController
 from session_management.controllers import SessionController
-from common import singleton
+from decorators import singleton
 
 @singleton
 class UserService:

@@ -1,5 +1,5 @@
 from ..services import DonationService
-from common import singleton
+from decorators import singleton
 
 
 @singleton

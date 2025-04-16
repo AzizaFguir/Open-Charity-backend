@@ -1,6 +1,6 @@
 from ..models import DonationCampaignIpfsGateway
 from helpers import IpfsHelper
-from common import singleton
+from decorators import singleton
 
 @singleton
 class DonationCampaignIpfsGatewayService:

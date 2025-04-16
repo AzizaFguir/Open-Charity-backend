@@ -1,5 +1,5 @@
 from ..services import DonationCampaignIpfsGatewayService
-from common import singleton
+from decorators import singleton
 
 
 @singleton

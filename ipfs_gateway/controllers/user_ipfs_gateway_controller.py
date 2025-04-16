@@ -1,5 +1,5 @@
 from ..services import UserIpfsGatewayService
-from common import singleton
+from decorators import singleton
 
 
 @singleton

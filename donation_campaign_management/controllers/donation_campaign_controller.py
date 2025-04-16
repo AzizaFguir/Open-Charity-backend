@@ -1,6 +1,6 @@
 from ..services import DonationCampaignService
 from core.models import Donation
-from common import singleton
+from decorators import singleton
 
 
 @singleton

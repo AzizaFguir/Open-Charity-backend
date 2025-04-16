@@ -1,5 +1,5 @@
 from ..services import DonationIpfsGatewayService
-from common import singleton
+from decorators import singleton
 
 @singleton
 class DonationIpfsGatewayController:

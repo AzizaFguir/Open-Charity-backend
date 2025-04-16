@@ -2,7 +2,7 @@ from core.models import DonationCampaign, Donation
 from helpers import IpfsHelper, StringHelper
 from ipfs_gateway.controllers import DonationCampaignIpfsGatewayController
 from user_management.controllers import UserController
-from common import singleton
+from decorators import singleton
 
 
 @singleton

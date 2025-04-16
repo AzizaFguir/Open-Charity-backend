@@ -1,6 +1,6 @@
 from ..services import UserService
 from core.models import DonationCampaign, Donation
-from common import singleton
+from decorators import singleton
 
 @singleton
 class UserController:
