@@ -29,8 +29,8 @@ class DonationService:
             IpfsHelper.uploadData(donation.getData())["IpfsHash"]
         )
 
-        self.donationCampaignController.addDonationToCampaign(donation, donation.getDonationCampaign())
-        self.userController.addDonationToUser(donation.getDonor(), donation)
+        self.__donationCampaignController.addDonationToCampaign(donation, donation.getDonationCampaign())
+        self.__userController.addDonationToUser(donation.getDonor(), donation)
 
         return donation.getData()
         
