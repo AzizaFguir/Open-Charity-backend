@@ -1,1 +1,2 @@
-from .donation_campaign_service import DonationCampaignService
+from .donation_campaign_service.donation_campaign_service import DonationCampaignService
+from .donation_campaign_service.i_donation_campaign_service import IDonationCampaignService

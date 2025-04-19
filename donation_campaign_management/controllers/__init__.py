@@ -1,1 +1,2 @@
-from .donation_campaign_controller import DonationCampaignController
+from .donation_campaign_controller.donation_campaign_controller import DonationCampaignController
+from .donation_campaign_controller.i_donation_campaign_controller import IDonationCampaignController

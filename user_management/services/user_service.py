@@ -1,14 +1,16 @@
 from core.models import User, DonationCampaign, Donation
 from helpers import IpfsHelper
-from ipfs_gateway.controllers import UserIpfsGatewayController
 from session_management.controllers import SessionController
 from decorators import singleton
+
+from ipfs_gateway.controllers import UserIpfsGatewayController, IUserIpfsGatewayController
+
 
 @singleton
 class UserService:
 
     def __init__(self, 
-        userIpfsGatewayController = UserIpfsGatewayController(),
+        userIpfsGatewayController: IUserIpfsGatewayController = UserIpfsGatewayController(),
         sessionController = SessionController()
     ):
         self.userIpfsGatewayController = userIpfsGatewayController

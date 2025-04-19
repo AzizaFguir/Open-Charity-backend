@@ -1,4 +1,4 @@
-from ..services import UserIpfsGatewayService
+from ...services import UserIpfsGatewayService, IUserIpfsGatewayService
 from decorators import singleton
 
 
@@ -7,7 +7,7 @@ class UserIpfsGatewayController:
 
     def __init__(
         self,
-        userIpfsGatewayService = UserIpfsGatewayService()
+        userIpfsGatewayService: IUserIpfsGatewayService = UserIpfsGatewayService()
     ):
         self.userIpfsGatewayService = userIpfsGatewayService
     

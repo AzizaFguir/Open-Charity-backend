@@ -1,4 +1,4 @@
-from ..models import UserIpfsGateway
+from ipfs_gateway.models import UserIpfsGateway
 from helpers import IpfsHelper
 from decorators import singleton
 

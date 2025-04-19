@@ -1,12 +1,17 @@
-from ..services import DonationCampaignService
 from core.models import Donation
 from decorators import singleton
+
+from donation_campaign_management.services import DonationCampaignService
+
 
 
 @singleton
 class DonationCampaignController:
 
-    def __init__(self, donationCampaignService = DonationCampaignService()):
+    def __init__(
+            self, 
+            donationCampaignService = DonationCampaignService()
+    ):
         self.donationCampaignService = donationCampaignService
 
 

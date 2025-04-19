@@ -1,11 +1,14 @@
-from ..services import UserService
+from ..services import UserService, IUserService
 from core.models import DonationCampaign, Donation
 from decorators import singleton
 
 @singleton
 class UserController:
 
-    def __init__(self, userService: UserService = UserService()):
+    def __init__(
+            self, 
+            userService: IUserService = UserService()
+    ):
         self.userService = userService
 
     def getUser(self, walletAddress: str):
