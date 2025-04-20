@@ -1,9 +1,10 @@
-from ..services import DonationService
+from ...services import DonationService
 from decorators import singleton
+from .i_donation_controller import IDonationController
 
 
 @singleton
-class DonationController:
+class DonationController(IDonationController):
 
     def __init__(self, donationService = DonationService()):
         self.donationService = donationService

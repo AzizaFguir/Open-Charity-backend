@@ -24,7 +24,6 @@ class UserService:
 
     def createUser(self, data):
         user = User(data["walletAddress"], data["username"], data["profilePic"])
-        self.userIpfsGatewayController.saveUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
         return user.getData()
 
     def updateUser(self, walletAddress: str, data):

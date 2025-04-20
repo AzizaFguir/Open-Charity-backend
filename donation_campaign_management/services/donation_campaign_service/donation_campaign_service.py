@@ -2,11 +2,12 @@ from core.models import DonationCampaign, Donation
 from helpers import IpfsHelper, StringHelper
 from ipfs_gateway.controllers import DonationCampaignIpfsGatewayController
 from user_management.controllers import UserController
+from .i_donation_campaign_service import IDonationCampaignService
 from decorators import singleton
 
 
 @singleton
-class DonationCampaignService: 
+class DonationCampaignService(IDonationCampaignService): 
 
     def __init__(
         self,

@@ -3,7 +3,13 @@ import core.models.DonationCampaign as DonationCampaign
 
 class User: 
 
-    def __init__(self, walletAddress: str, username: str, profilePic: str, donations: dict = {}, donationCampaigns: dict = {}):
+    def __init__(self, 
+        walletAddress: str, 
+        username: str, 
+        profilePic: str, 
+        donations: dict = {}, 
+        donationCampaigns: dict = {}
+    ):
         self.__walletAddress = walletAddress
         self.__username = username
         self.__profilePic = profilePic

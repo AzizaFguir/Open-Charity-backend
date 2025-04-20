@@ -1,16 +1,17 @@
 from core.models import Donation
 from decorators import singleton
 
-from donation_campaign_management.services import DonationCampaignService
+from donation_campaign_management.services import DonationCampaignService, IDonationCampaignService
+from .i_donation_campaign_controller import IDonationCampaignController
 
 
 
 @singleton
-class DonationCampaignController:
+class DonationCampaignController(IDonationCampaignController):
 
     def __init__(
             self, 
-            donationCampaignService = DonationCampaignService()
+            donationCampaignService: IDonationCampaignService = DonationCampaignService()
     ):
         self.donationCampaignService = donationCampaignService
 

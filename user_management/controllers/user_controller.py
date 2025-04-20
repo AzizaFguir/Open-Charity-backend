@@ -1,5 +1,8 @@
 from ..services import UserService, IUserService
-from core.models import DonationCampaign, Donation
+from ipfs_gateway.controllers import UserIpfsGatewayController, IUserIpfsGatewayController
+from helpers import IpfsHelper
+
+from core.models import DonationCampaign, Donation, User
 from decorators import singleton
 
 @singleton
@@ -7,9 +10,12 @@ class UserController:
 
     def __init__(
             self, 
-            userService: IUserService = UserService()
+            userService: IUserService = UserService(),
+            userIpfsGatewayController: IUserIpfsGatewayController = UserIpfsGatewayController()
+
     ):
         self.userService = userService
+        self.userIpfsGatewayController = userIpfsGatewayController
 
     def getUser(self, walletAddress: str):
         return self.userService.getUser(walletAddress)
@@ -18,7 +24,9 @@ class UserController:
         return self.userService.getUsers()
 
     def createUser(self, data):
-        return self.userService.createUser(data)
+        user: User = self.userService.createUser(data)
+        return self.userIpfsGatewayController.saveUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
+    
 
     def updateUser(self, walletAddress, data):
         return self.userService.updateUser(walletAddress, data)
