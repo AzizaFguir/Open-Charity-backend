@@ -1,1 +1,2 @@
 from ipfs_validator import IpfsValidator
+from wallet_address_validator import WalletAddressValidator
