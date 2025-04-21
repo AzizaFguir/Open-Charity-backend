@@ -1,48 +1,14 @@
-from session_management.models import Session
-from helpers import StringHelper
+from session_management.commands.add_session_command import AddSessionCommand
+from session_management.commands.remove_session_command import RemoveSessionCommand
 from ipfs_gateway.controllers import UserIpfsGatewayController
 
+class SessionService:
 
-class SessionService: 
-
-    def __init__(
-        self,
-        userIpfsGatewayController = UserIpfsGatewayController()
-    ):
+    def __init__(self, userIpfsGatewayController=UserIpfsGatewayController()):
         self.userIpfsGatewayController = userIpfsGatewayController
 
-    def addSession(self, walletAddress: str, signature: str): 
-        try:
-            userIpfsRecord = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
+    def addSession(self, walletAddress: str, signature: str):
+        return AddSessionCommand(walletAddress, signature, self.userIpfsGatewayController).execute()
 
-            if userIpfsRecord["walletAddress"] == "":
-                return {
-                    "code": 404,
-                    "message": "user not found"
-                }
-            
-            else:
-                session = Session(walletAddress = walletAddress, sessionToken=signature)
-                session.save()
-                return {
-                    "code": 200,
-                    "message": "connected",
-                    "sessionToken": session.sessionToken
-                }
-        
-        except KeyError:
-           return {
-                "code": 401,
-                "message": "authentication failed"
-            }
-
-    
     def removeSession(self, sessionToken: str):
-        Session.objects.filter(sessionToken=sessionToken).delete()
-
-        return {
-            "code": 200,
-            "message": "logged out",
-        }
-        
-        
+        return RemoveSessionCommand(sessionToken).execute()

@@ -1,9 +1,9 @@
-from datetime import date
+from datetime import datetime
 import core.models.Donation as Donation
 
 class DonationCampaign: 
 
-    def __init__(self, id, title, description, wallpaper, beneficiary, donations: dict={}, openStatus=True):
+    def __init__(self, id, title, description, wallpaper, beneficiary, donations: dict={}, openStatus=True,dateCreated=None):
         self.__id = id
         self.__title = title
         self.__description = description
@@ -11,7 +11,11 @@ class DonationCampaign:
         self.__beneficiary = beneficiary
         self.__donations: dict = donations
         self.__openStatus = openStatus
-        self.__dateCreated = date.today()
+        if isinstance(dateCreated, str):
+            # If the string is in ISO format, convert to datetime
+            self.__dateCreated = datetime.fromisoformat(dateCreated)
+        else:
+            self.__dateCreated = dateCreated if dateCreated else datetime.now()
 
     def getId(self):
         return self.__id
@@ -35,6 +39,9 @@ class DonationCampaign:
         return self.__openStatus
 
     def getDateCreated(self):
+        # Ensure __dateCreated is always a datetime object before calling isoformat
+        if isinstance(self.__dateCreated, str):
+            self.__dateCreated = datetime.fromisoformat(self.__dateCreated)
         return self.__dateCreated.isoformat()
 
     def getData(self):

@@ -1,5 +1,12 @@
-from core.models import User, DonationCampaign, Donation
-from helpers import IpfsHelper
+from user_management.commands.create_user_command import CreateUserCommand
+from user_management.commands.update_user_command import UpdateUserCommand
+from user_management.commands.login_user_command import LoginUserCommand
+from user_management.commands.logout_user_command import LogoutUserCommand
+from user_management.commands.add_donation_to_user_command import AddDonationToUserCommand
+from user_management.commands.add_donation_campaign_command import AddDonationCampaignCommand
+from user_management.commands.remove_donation_campaign_command import RemoveDonationCampaignCommand
+from user_management.commands.update_donation_campaign_command import UpdateDonationCampaignCommand
+
 from ipfs_gateway.controllers import UserIpfsGatewayController
 from session_management.controllers import SessionController
 from decorators import singleton
@@ -8,72 +15,38 @@ from decorators import singleton
 class UserService:
 
     def __init__(self, 
-        userIpfsGatewayController = UserIpfsGatewayController(),
-        sessionController = SessionController()
+        userIpfsGatewayController=UserIpfsGatewayController(),
+        sessionController=SessionController()
     ):
         self.userIpfsGatewayController = userIpfsGatewayController
         self.sessionController = sessionController
 
-    def getUser(self, walletAddress: str):
+    def getUser(self, walletAddress):
         return self.userIpfsGatewayController.getUserIpfsData(walletAddress)
 
     def getUsers(self):
         return self.userIpfsGatewayController.getAllUserIpfsData()
 
     def createUser(self, data):
-        user = User(data["walletAddress"], data["username"], data["profilePic"])
-        self.userIpfsGatewayController.saveUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
-        return user.getData()
+        return CreateUserCommand(data, self.userIpfsGatewayController).execute()
 
-    def updateUser(self, walletAddress: str, data):
-        userData = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
-        user = User(userData["walletAddress"], userData["username"], userData["profilePic"], userData["donations"], userData["donationCampaigns"])
+    def updateUser(self, walletAddress, data):
+        return UpdateUserCommand(walletAddress, data, self.userIpfsGatewayController).execute()
 
-        user.update(
-            username=data["username"], 
-            profilePic=data["profilePic"], 
-            walletAddress=data["walletAddress"]
-        )
+    def addDonationToUser(self, walletAddress, donation):
+        return AddDonationToUserCommand(walletAddress, donation, self.userIpfsGatewayController).execute()
 
-        self.userIpfsGatewayController.updateUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
+    def addDonationCampaignToUser(self, walletAddress, campaign):
+        return AddDonationCampaignCommand(walletAddress, campaign, self.userIpfsGatewayController).execute()
 
-        return user.getData()
+    def removeDonationCampaignFromUser(self, walletAddress, campaignId):
+        return RemoveDonationCampaignCommand(walletAddress, campaignId, self.userIpfsGatewayController).execute()
 
-    def addDonationCampaignToUser(self, walletAddress, donationCamapign: DonationCampaign):
-        userData = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
-        user = User(userData["walletAddress"], userData["username"], userData["profilePic"], userData["donations"], userData["donationCampaigns"])
-        user.addDonationCampaign(donationCamapign)
-        self.userIpfsGatewayController.updateUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
-
-        return user.getData()
-    
-    def removeDonationCampaignFromUser(self, walletAddress, donationCampaignId: str):
-        userData = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
-        user = User(userData["walletAddress"], userData["username"], userData["profilePic"], userData["donations"], userData["donationCampaigns"])
-        user.removeDonationCampaign(donationCampaignId)
-        self.userIpfsGatewayController.updateUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
-
-        return user.getData()
-    
-    def updateUserDonationCampaign(self, walletAddress, donationCamapign: DonationCampaign):
-        userData = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
-        user = User(userData["walletAddress"], userData["username"], userData["profilePic"], userData["donations"], userData["donationCampaigns"])
-        user.updateDonationCampaign(donationCamapign)
-        self.userIpfsGatewayController.updateUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
-
-        return user.getData()
-    
-    def addDonationToUser(self, walletAddress: str, donation: Donation):
-        userData = self.userIpfsGatewayController.getUserIpfsData(walletAddress)
-        user = User(userData["walletAddress"], userData["username"], userData["profilePic"], userData["donations"], userData["donationCampaigns"])
-        user.addDonation(donation)
-        self.userIpfsGatewayController.updateUserIpfsRecord(user.getWalletAddress(), IpfsHelper.uploadData(user.getData())["IpfsHash"])
-
-        return user.getData()
+    def updateUserDonationCampaign(self, walletAddress, campaign):
+        return UpdateDonationCampaignCommand(walletAddress, campaign, self.userIpfsGatewayController).execute()
 
     def login(self, data):
-        return self.sessionController.addSession(data["walletAddress"], data["signature"])
-            
-    
+        return LoginUserCommand(data, self.sessionController).execute()
+
     def logout(self, data):
-        return self.sessionController.removeSession(data["sessionToken"])
+        return LogoutUserCommand(data, self.sessionController).execute()

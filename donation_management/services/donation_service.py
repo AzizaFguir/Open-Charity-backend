@@ -1,5 +1,4 @@
-from core.models import Donation
-from helpers import StringHelper, IpfsHelper
+from donation_management.commands.add_donation_command import AddDonationCommand
 from donation_campaign_management.controllers import DonationCampaignController
 from user_management.controllers import UserController
 from ipfs_gateway.controllers import DonationIpfsGatewayController
@@ -17,20 +16,9 @@ class DonationService:
         self.userController = userController
 
     def addDonation(self, donationData: dict):
-        donation = Donation(
-            StringHelper.generateRandomString(), 
-            donationData["donor"], 
-            donationData["donationCampaignId"],
-            donationData['amount']
-        )
-
-        self.donationIpfsGatewayController.saveDonationIpfsRecord(
-            donation.getId(),
-            IpfsHelper.uploadData(donation.getData())["IpfsHash"]
-        )
-
-        self.donationCampaignController.addDonationToCampaign(donation, donation.getDonationCampaign())
-        self.userController.addDonationToUser(donation.getDonor(), donation)
-
-        return donation.getData()
-        
+        return AddDonationCommand(
+            donationData,
+            self.donationIpfsGatewayController,
+            self.donationCampaignController,
+            self.userController
+        ).execute()
