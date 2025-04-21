@@ -4,6 +4,7 @@ from validators import IpfsValidator, WalletAddressValidator
 # Create your models here.
 
 
+
 class UserIpfsGateway(models.Model):
     walletAddress = models.CharField(max_length=255, primary_key=True, validators=[WalletAddressValidator.validateWalletAddress])
     cid = models.CharField(max_length=255, validators=[IpfsValidator.validateCID]) 
